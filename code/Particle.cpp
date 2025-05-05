@@ -1,5 +1,43 @@
 #include "Particle.h"
 
+// Constructor
+Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosition) : m_A(2, numPoints)
+{
+    m_ttl = TTL;
+    m_numPoints = numPoints;
+    // random number in range [0:PI]
+    m_radiansPerSec = ((float)rand() / RAND_MAX) * M_PI;
+    // Setting the Cartesian coordinates
+    m_cartesianPlane.setCenter(0,0);
+    m_cartesianPlane.setSize(target.getSize().x, (-1.0) * target.getSize().y);
+    // Center position storage
+    m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
+    // Set random values for velocities
+    m_vx = (rand() % 401) + 100;
+    if (rand() % 2 != 0) { m_vx *= (-1.0)}
+    m_vy = (rand() % 401) + 100;
+    // Set the colors
+    m_color1 = Color::White;
+    m_color2 = Color(rand() % 256, rand() % 256, rand() % 256);
+
+    // numPoint Alghoritm
+    float theta = ((float)rand() / RAND_MAX) * M_PI / 2;
+    float dtheta = 2 * M_PI / (m_numPoints - 1);
+    // Set up each vertex
+    for (size_t j; j < m_numPoints; j++)
+    {
+        float r = (rand % 61) + 20;
+        float dx = r * cos(theta);
+        float dy = r * sin(theta);
+
+        m_A(0, j) = m_centerCoordinate.x + dx;
+        m_A(1, j) = m_centerCoordinate.y + dy;
+
+        theta += dtheta;
+    }
+}
+
+// Unit testing
 
 bool Particle::almostEqual(double a, double b, double eps)
 {
