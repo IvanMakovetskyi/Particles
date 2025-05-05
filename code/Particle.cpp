@@ -37,6 +37,27 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     }
 }
 
+void Particle::draw(RenderTarget& target, RenderStates states) const
+{
+    // Create the vertecies vector
+    VertexArray lines(TriangleFan, m_numPoints + 1);
+    // Set up the center
+    Vector2f center = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
+    lines[0].position = center;
+    lines[0].color = m_color1;
+
+    // Assigning the vertecies
+    for (size_t j; j <= m_numPoints; j++)
+    {
+        lines[j].position = target.mapCoordsToPixel({m_A(0, j-1), m_A(1, j-1)}, m_cartesianPlane);
+        lines[j].color = m_color2;
+    }
+
+    target.draw(lines);
+}
+
+
+
 // Unit testing
 
 bool Particle::almostEqual(double a, double b, double eps)
