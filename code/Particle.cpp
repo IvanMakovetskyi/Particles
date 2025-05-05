@@ -56,7 +56,20 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     target.draw(lines);
 }
 
-
+void Particle::update(float dt)
+{
+    // Subtruct the time that passed
+    m_ttl -= dt;
+    // Update the Particle
+    rotate(dt * m_radiansPerSec);
+    scale(SCALE);
+    // Translate
+    float dx, dy;
+    dx = m_vx * dt;
+    m_vy -= G * dt;
+    dy = m_vy * dt;
+    translate(dx, dy);
+}
 
 // Unit testing
 
