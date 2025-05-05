@@ -71,6 +71,39 @@ void Particle::update(float dt)
     translate(dx, dy);
 }
 
+void Particle::translate(double xShift, double yShift)
+{
+    // Creates the TranslationMatrix which then adds to coords
+    TranslationMatrix T(xShift, yShift);
+    m_a = T + m_A;
+    m_centerCoordinate.x += xShift;
+    m_centerCoordinate.y += yShift;
+}
+
+void Particle::rotate(double theta)
+{
+    // Move Particle to the center
+    Vector2f temp = m_centerCoordinate;
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+    // Rotate
+    RotationMatrix R(theta);
+    m_A = R * m_A;
+    //Bring it back
+    translate(temp.x, temp.y);
+}
+
+void Particle::scale(double c)
+{
+    // Move Particle to the center
+    Vector2f temp = m_centerCoordinate;
+    translate(-m_centerCoordinate.x, -m_centerCoordinate.y);
+    // Scale
+    ScalingMatrix S(c);
+    m_A = S * m_A;
+    //Bring it back
+    translate(temp.x, temp.y);
+}
+
 // Unit testing
 
 bool Particle::almostEqual(double a, double b, double eps)
