@@ -52,7 +52,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     for (size_t j = 1; j <= m_numPoints; j++)
     {
         Vector2i pixelCoords = target.mapCoordsToPixel(Vector2f((float)(m_A(0, j-1)), (float)(m_A(1, j-1))), m_cartesianPlane);        
-        lines[j].position = pixelCoords;
+        lines[j].position = {(float)pixelCoords.x, (float)pixelCoords.y};
         lines[j].color = m_color2;
     }
 
