@@ -103,7 +103,7 @@ void Engine::draw()
     m_Window.clear();
 
     // Go through each Particle and call draw function
-    for (size_t i; i < m_particles.size(); i++)
+    for (size_t i = 0; i < m_particles.size(); i++)
     {
         m_Window.draw(m_particles.at(i));
     }

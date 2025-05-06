@@ -39,6 +39,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 
 void Particle::draw(RenderTarget& target, RenderStates states) const
 {
+    cout << "Drawing particle..." << endl;
     // Create the vertecies vector
     VertexArray lines(TriangleFan, m_numPoints + 1);
     // Set up the center
@@ -49,7 +50,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     lines[0].color = m_color1;
 
     // Assigning the vertecies
-    for (size_t j; j <= m_numPoints; j++)
+    for (size_t j = 1; j <= m_numPoints; j++)
     {
         Vector2i pixelCoords = target.mapCoordsToPixel({m_A(0, j-1), m_A(1, j-1)}, m_cartesianPlane);
         lines[j].position = (Vector2f((float)pixelCoords.x, (float)pixelCoords.y));
