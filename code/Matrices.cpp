@@ -102,32 +102,28 @@ namespace Matrices
         return os;
     }
 
-    RotationMatrix::RotationMatrix(double theta)
+    RotationMatrix::RotationMatrix(double theta) : Matrix(2, 2)
     {
-        Matrix Matrix(2, 2);
-        Matrix(0,0) = cos(theta);
-        Matrix(1,0) = sin(theta);
-        Matrix(0,1) = (-1.0) * sin(theta);
-        Matrix(1,1) = cos(theta);
+        (*this)(0,0) = cos(theta);
+        (*this)(1,0) = sin(theta);
+        (*this)(0,1) = (-1.0) * sin(theta);
+        (*this)(1,1) = cos(theta);
     }
 
-    ScalingMatrix::ScalingMatrix(double scale)
+    ScalingMatrix::ScalingMatrix(double scale) : Matrix(2, 2)
     {
-        Matrix Matrix(2, 2);
-        Matrix(0,0) = scale;
-        Matrix(1,0) = 0;
-        Matrix(0,1) = 0;
-        Matrix(1,1) = scale;
+        (*this)(0,0) = scale;
+        (*this)(1,0) = 0;
+        (*this)(0,1) = 0;
+        (*this)(1,1) = scale;
     }
 
-    TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols)
+    TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols) : Matrix(2, nCols)
     {
-        Matrix Matrix(2, nCols);
-
-        for (size_t i; i < nCols; i++)
+        for (size_t i = 0; i < nCols; i++)
         {
-            Matrix(0, i) = xShift;
-            Matrix(1, i) = yShift;
+            (*this)(0, i) = xShift;
+            (*this)(1, i) = yShift;
         }
     }
 }
