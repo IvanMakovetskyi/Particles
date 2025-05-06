@@ -101,4 +101,33 @@ namespace Matrices
 
         return os;
     }
+
+    RotationMatrix::RotationMatrix(double theta)
+    {
+        Matrix Matrix(2, 2);
+        Matrix(0,0) = cos(theta);
+        Matrix(1,0) = sin(theta);
+        Matrix(0,1) = (-1.0) * sin(theta);
+        Matrix(1,1) = cos(theta);
+    }
+
+    ScalingMatrix::ScalingMatrix(double scale)
+    {
+        Matrix Matrix(2, 2);
+        Matrix(0,0) = scale;
+        Matrix(1,0) = 0;
+        Matrix(0,1) = 0;
+        Matrix(1,1) = scale;
+    }
+
+    TranslationMatrix::TranslationMatrix(double xShift, double yShift, int nCols)
+    {
+        Matrix Matrix(2, nCols);
+
+        for (size_t i; i < nCols; i++)
+        {
+            Matrix(0, i) = xShift;
+            Matrix(1, i) = yShift;
+        }
+    }
 }
