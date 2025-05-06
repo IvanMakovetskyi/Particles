@@ -24,7 +24,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     float theta = ((float)rand() / RAND_MAX) * M_PI / 2;
     float dtheta = 2 * M_PI / (m_numPoints - 1);
     // Set up each vertex
-    for (size_t j; j < m_numPoints; j++)
+    for (size_t j = 0; j < m_numPoints; j++)
     {
         float r = (rand() % 61) + 20;
         float dx = r * cos(theta);
@@ -39,7 +39,6 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
 
 void Particle::draw(RenderTarget& target, RenderStates states) const
 {
-    cout << "Drawing particle..." << endl;
     // Create the vertecies vector
     VertexArray lines(TriangleFan, m_numPoints + 1);
     // Set up the center
@@ -52,8 +51,8 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     // Assigning the vertecies
     for (size_t j = 1; j <= m_numPoints; j++)
     {
-        Vector2i pixelCoords = target.mapCoordsToPixel({m_A(0, j-1), m_A(1, j-1)}, m_cartesianPlane);
-        lines[j].position = (Vector2f((float)pixelCoords.x, (float)pixelCoords.y));
+        Vector2i pixelCoords = target.mapCoordsToPixel(Vector2f((float)(m_A(0, j-1)), (float)(m_A(1, j-1))), m_cartesianPlane);        
+        lines[j].position = pixelCoords;
         lines[j].color = m_color2;
     }
 
