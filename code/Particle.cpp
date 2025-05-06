@@ -14,7 +14,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     m_centerCoordinate = target.mapPixelToCoords(mouseClickPosition, m_cartesianPlane);
     // Set random values for velocities
     m_vx = (rand() % 401) + 100;
-    if (rand() % 2 != 0) { m_vx *= (-1.0)}
+    if (rand() % 2 != 0) { m_vx *= (-1.0); }
     m_vy = (rand() % 401) + 100;
     // Set the colors
     m_color1 = Color::White;
@@ -26,7 +26,7 @@ Particle::Particle(RenderTarget& target, int numPoints, Vector2i mouseClickPosit
     // Set up each vertex
     for (size_t j; j < m_numPoints; j++)
     {
-        float r = (rand % 61) + 20;
+        float r = (rand() % 61) + 20;
         float dx = r * cos(theta);
         float dy = r * sin(theta);
 
@@ -42,14 +42,17 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
     // Create the vertecies vector
     VertexArray lines(TriangleFan, m_numPoints + 1);
     // Set up the center
-    Vector2f center = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
+    Vector2i pixelCoords = target.mapCoordsToPixel(m_centerCoordinate, m_cartesianPlane);
+    Vector2f center((float)pixelCoords.x, float(pixelCoords.y));
+
     lines[0].position = center;
     lines[0].color = m_color1;
 
     // Assigning the vertecies
     for (size_t j; j <= m_numPoints; j++)
     {
-        lines[j].position = target.mapCoordsToPixel({m_A(0, j-1), m_A(1, j-1)}, m_cartesianPlane);
+        Vector2i pixelCoords = target.mapCoordsToPixel({m_A(0, j-1), m_A(1, j-1)}, m_cartesianPlane);
+        lines[j].position = (Vector2f((float)pixelCoords.x, (float)pixelCoords.y));
         lines[j].color = m_color2;
     }
 
@@ -74,8 +77,8 @@ void Particle::update(float dt)
 void Particle::translate(double xShift, double yShift)
 {
     // Creates the TranslationMatrix which then adds to coords
-    TranslationMatrix T(xShift, yShift);
-    m_a = T + m_A;
+    TranslationMatrix T(xShift, yShift, m_numPoints);
+    m_A = T + m_A;
     m_centerCoordinate.x += xShift;
     m_centerCoordinate.y += yShift;
 }
