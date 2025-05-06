@@ -62,7 +62,7 @@ void Particle::draw(RenderTarget& target, RenderStates states) const
 void Particle::update(float dt)
 {
     // Subtruct the time that passed
-    m_ttl -= dt;
+    m_ttl = m_ttl - dt;
     // Update the Particle
     rotate(dt * m_radiansPerSec);
     scale(SCALE);

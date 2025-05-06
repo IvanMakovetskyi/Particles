@@ -3,8 +3,8 @@
 Engine::Engine()
 {
     // Initialize the window
-    VideoMode vm = VideoMode::getDesktopMode();
-    m_Window.create(vm, "Particles");
+    //VideoMode vm = VideoMode::getDesktopMode();
+    m_Window.create({1000,800}, "Particles");
 }
 
 void Engine::run()
@@ -57,7 +57,7 @@ void Engine::input()
             if (event.mouseButton.button == Mouse::Left)
             {
                 // Loop to costruct 5 particles
-                for (size_t i; i < 5; i++)
+                for (size_t i = 0; i < 5; i++)
                 {
                     // rand number in range [25:50]
                     // use that for number of vertices
@@ -67,7 +67,8 @@ void Engine::input()
                     Vector2i mouseClickPosition = {event.mouseButton.x, event.mouseButton.y};
                     
                     // Add the Particle to a vector
-                    m_particles.push_back(Particle(m_Window, numPoints, mouseClickPosition));
+                    Particle particle(m_Window, numPoints, mouseClickPosition);
+                    m_particles.push_back(particle);
                 }
             }
         }
@@ -77,11 +78,11 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-    size_t i;
+    size_t i = 0;
     // Go through each Particle
     while (i < m_particles.size())
     {
-        Particle particle = m_particles.at(i);
+        Particle& particle = m_particles.at(i);
         // If the TTL is not passed
         // update
         if (particle.getTTL() > 0.0)
@@ -91,7 +92,7 @@ void Engine::update(float dtAsSeconds)
         }
         // or delete if passed
         else
-        {
+        {   
             i = m_particles.erase(m_particles.begin() + i) - m_particles.begin();
         }
     }
