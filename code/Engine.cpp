@@ -4,7 +4,7 @@ Engine::Engine()
 {
     // Initialize the window
     VideoMode vm = VideoMode::getDesktopMode();
-    m_Window.create(vm);
+    m_Window.create(vm, "Particles");
 }
 
 void Engine::run()
@@ -23,8 +23,8 @@ void Engine::run()
     {
         // Restarts the clock
         // Sets the time to seconds
-        Time dt clock.restart();
-        dtAsSeconds = dt.asSeconds;
+        Time dt = clock.restart();
+        float dtAsSeconds = dt.asSeconds();
 
         input();
         update(dtAsSeconds);
@@ -41,13 +41,13 @@ void Engine::input()
         // Request for closing the window
         if (event.type == Event::Closed)
         {
-            window.close();
+            m_Window.close();
         }
     
         // The escape key was pressed
         if ((event.type == Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
         {
-            window.close();
+            m_Window.close();
         }
 
         // Mouse click
@@ -77,14 +77,14 @@ void Engine::input()
 
 void Engine::update(float dtAsSeconds)
 {
-    size t i;
+    size_t i;
     // Go through each Particle
-    for (i < m_particles.size())
+    while (i < m_particles.size())
     {
-        particle = m_particles.at(i);
+        Particle particle = m_particles.at(i);
         // If the TTL is not passed
         // update
-        if (particle.getTTL > 0.0)
+        if (particle.getTTL() > 0.0)
         {
             particle.update(dtAsSeconds);
             i++;
@@ -92,7 +92,7 @@ void Engine::update(float dtAsSeconds)
         // or delete if passed
         else
         {
-            i = m_particles.erase(i);
+            i = m_particles.erase(m_particles.begin() + i) - m_particles.begin();
         }
     }
 }
